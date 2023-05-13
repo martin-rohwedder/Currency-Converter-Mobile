@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CurrencyConverter.Views.CurrencyConverterPage"
+             xmlns:local="clr-namespace:CurrencyConverter.ViewModels"
+             Title="Currency Converter">
+    <ContentPage.BindingContext>
+        <local:CurrencyConverterViewModel />
+    </ContentPage.BindingContext>
+    
+    <Grid 
+        VerticalOptions="Center">
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <Label 
+            Text="{Binding Count, StringFormat='The Count is: {0}'}"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center"
+            Grid.Row="0" />
+
+        <Button 
+            Text="Click Me" 
+            Command="{Binding CountCommand}"
+            Grid.Row="1" />
+    </Grid>
+</ContentPage>
