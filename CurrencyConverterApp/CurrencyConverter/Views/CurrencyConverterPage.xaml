@@ -3,28 +3,78 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CurrencyConverter.Views.CurrencyConverterPage"
              xmlns:local="clr-namespace:CurrencyConverter.ViewModels"
-             Title="Currency Converter">
+             Title="Currency Converter"
+             Shell.NavBarIsVisible="False">
     <ContentPage.BindingContext>
         <local:CurrencyConverterViewModel />
     </ContentPage.BindingContext>
-    
-    <Grid 
-        VerticalOptions="Center">
-        
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        
-        <Label 
-            Text="{Binding Count, StringFormat='The Count is: {0}'}"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center"
-            Grid.Row="0" />
 
-        <Button 
-            Text="Click Me" 
-            Command="{Binding CountCommand}"
-            Grid.Row="1" />
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Label Text="Valuta Omregner"
+               HorizontalOptions="Center"
+               FontSize="32"
+               Grid.Row="0" />
+
+        <FlexLayout Direction="Column"
+                    AlignItems="Stretch"
+                    JustifyContent="SpaceEvenly"
+                    Grid.Row="1">
+            <Image Source="dotnet_bot.svg"
+                   HorizontalOptions="Center" />
+
+            <Grid ColumnSpacing="25"
+                  RowSpacing="25">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Label Text="Beløb"
+                       FontSize="24"
+                       Grid.Row="0" 
+                       Grid.Column="0" 
+                       Grid.ColumnSpan="3" />
+
+                <Entry Placeholder="Indtast Beløb"
+                       Keyboard="Numeric"
+                       Grid.Row="1"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="3" />
+
+                <Picker SelectedIndex="0"
+                        Grid.Row="2"
+                        Grid.Column="0" />
+                
+                <Label Text="==>" 
+                       Grid.Row="2" 
+                       Grid.Column="1"
+                       VerticalOptions="Center" />
+
+                <Picker SelectedIndex="0"
+                        Grid.Row="2"
+                        Grid.Column="2" />
+            </Grid>
+
+            <Label Text="0 DKK"
+                   FontSize="28"
+                   HorizontalOptions="Center" />
+        </FlexLayout>
+
+        <Label Text="Copyright 2023 Martin Rohwedder"
+               FontSize="Small"
+               HorizontalOptions="Center"
+               Grid.Row="2" />
     </Grid>
 </ContentPage>
