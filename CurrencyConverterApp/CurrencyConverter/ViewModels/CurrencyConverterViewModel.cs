@@ -5,7 +5,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace CurrencyConverter.ViewModels
 {
@@ -13,30 +12,91 @@ namespace CurrencyConverter.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-		public ICommand CountCommand { get; private set; }
+		private double _amount;
+        private IList<Currency> _currencies;
+        private Currency _selectedFromCurrency;
+        private Currency _selectedToCurrency;
 
-        private int _count;
-
-		public int Count
+        public CurrencyConverterViewModel()
 		{
-			get { return _count; }
+			Amount = 1;
+
+            Currencies = new List<Currency>
+            {
+                new Currency()
+                {
+                    Name = "EUR",
+                    Price = 1
+                },
+                new Currency()
+                {
+                    Name = "DKK",
+                    Price = 7.45
+                },
+                new Currency()
+                {
+                    Name = "SEK",
+                    Price = 5.5
+                },
+                new Currency()
+                {
+                    Name = "NOK",
+                    Price = 7.30
+                },
+                new Currency()
+                {
+                    Name = "USD",
+                    Price = 1.2
+                },
+            };
+
+			SelectedFromCurrency = Currencies.FirstOrDefault();
+			SelectedToCurrency = Currencies[1];
+        }
+
+		public double Amount
+		{
+			get { return _amount; }
 			set
 			{
-				_count = value;
-				OnPropertyChanged();
+				_amount = value;
+				OnPropertyChanged(nameof(Amount));
 			}
 		}
 
-        public CurrencyConverterViewModel()
-        {
-            CountCommand = new Command(
-                execute: () =>
-                {
-                    Count++;
-                });
-        }
+		public IList<Currency> Currencies
+		{
+			get { return _currencies; }
+			set { _currencies = value; }
+		}
 
-        public void OnPropertyChanged([CallerMemberName] string name = "") =>
+		public Currency SelectedFromCurrency
+		{
+			get { return _selectedFromCurrency; }
+			set
+			{
+				_selectedFromCurrency = value;
+				OnPropertyChanged(nameof(SelectedFromCurrency));
+			}
+		}
+
+		public Currency SelectedToCurrency
+		{
+			get { return _selectedToCurrency; }
+			set
+			{
+				_selectedToCurrency = value;
+				OnPropertyChanged(nameof(SelectedToCurrency));
+			}
+		}
+
+		public void OnPropertyChanged([CallerMemberName] string name = "") =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+    }
+
+	class Currency
+	{
+        public string Name { get; set; }
+        public double Price { get; set; }
     }
 }

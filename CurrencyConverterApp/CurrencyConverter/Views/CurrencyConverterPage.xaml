@@ -49,11 +49,14 @@
 
                 <Entry Placeholder="Indtast Beløb"
                        Keyboard="Numeric"
+                       Text="{Binding Amount}"
                        Grid.Row="1"
                        Grid.Column="0"
                        Grid.ColumnSpan="3" />
 
-                <Picker SelectedIndex="0"
+                <Picker ItemsSource="{Binding Currencies}"
+                        ItemDisplayBinding="{Binding Name}"
+                        SelectedItem="{Binding SelectedFromCurrency}"
                         Grid.Row="2"
                         Grid.Column="0" />
                 
@@ -62,14 +65,22 @@
                        Grid.Column="1"
                        VerticalOptions="Center" />
 
-                <Picker SelectedIndex="0"
+                <Picker ItemsSource="{Binding Currencies}"
+                        ItemDisplayBinding="{Binding Name}"
+                        SelectedItem="{Binding SelectedToCurrency}"
                         Grid.Row="2"
                         Grid.Column="2" />
             </Grid>
 
-            <Label Text="0 DKK"
-                   FontSize="28"
-                   HorizontalOptions="Center" />
+            <Label FontSize="28"
+                   HorizontalOptions="Center">
+                <Label.Text>
+                    <MultiBinding StringFormat="{}{0} {1}">
+                        <Binding Path="Amount" />
+                        <Binding Path="SelectedToCurrency.Name" />
+                    </MultiBinding>
+                </Label.Text>
+            </Label>
         </FlexLayout>
 
         <Label Text="Copyright 2023 Martin Rohwedder"
