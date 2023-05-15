@@ -72,7 +72,7 @@
                    HorizontalOptions="Center">
                 <Label.Text>
                     <MultiBinding StringFormat="{}{0} {1}">
-                        <Binding Path="Amount" />
+                        <Binding Path="ConvertedCurrency" />
                         <Binding Path="SelectedToCurrency.Name" />
                     </MultiBinding>
                 </Label.Text>

@@ -18,12 +18,11 @@ namespace CurrencyConverter.ViewModels
         private IList<Currency> _currencies;
         private Currency _selectedFromCurrency;
         private Currency _selectedToCurrency;
+		private double _convertedCurrency;
 
-        public CurrencyConverterViewModel(ICurrencyConverterService currencyConverterService)
+		public CurrencyConverterViewModel(ICurrencyConverterService currencyConverterService)
 		{
             _currencyConverterService = currencyConverterService;
-
-			Amount = 1;
 
             Currencies = new List<Currency>
             {
@@ -56,6 +55,8 @@ namespace CurrencyConverter.ViewModels
 
 			SelectedFromCurrency = Currencies.FirstOrDefault();
 			SelectedToCurrency = Currencies[1];
+
+            Amount = 1;
         }
 
 		public double Amount
@@ -64,7 +65,8 @@ namespace CurrencyConverter.ViewModels
 			set
 			{
 				_amount = value;
-				OnPropertyChanged(nameof(Amount));
+                ConvertedCurrency = _currencyConverterService.ConvertCurrency(SelectedFromCurrency.Price, SelectedToCurrency.Price, _amount);
+                OnPropertyChanged(nameof(Amount));
 			}
 		}
 
@@ -94,7 +96,17 @@ namespace CurrencyConverter.ViewModels
 			}
 		}
 
-		public void OnPropertyChanged([CallerMemberName] string name = "") =>
+        public double ConvertedCurrency
+        {
+            get { return _convertedCurrency; }
+            set
+            {
+                _convertedCurrency = value;
+                OnPropertyChanged(nameof(ConvertedCurrency));
+            }
+        }
+
+        public void OnPropertyChanged([CallerMemberName] string name = "") =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 
