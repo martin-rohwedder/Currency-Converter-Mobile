@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CurrencyConverter.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -8,17 +9,20 @@ using System.Threading.Tasks;
 
 namespace CurrencyConverter.ViewModels
 {
-    class CurrencyConverterViewModel : INotifyPropertyChanged
+    public class CurrencyConverterViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private readonly ICurrencyConverterService _currencyConverterService;
 		private double _amount;
         private IList<Currency> _currencies;
         private Currency _selectedFromCurrency;
         private Currency _selectedToCurrency;
 
-        public CurrencyConverterViewModel()
+        public CurrencyConverterViewModel(ICurrencyConverterService currencyConverterService)
 		{
+            _currencyConverterService = currencyConverterService;
+
 			Amount = 1;
 
             Currencies = new List<Currency>
@@ -94,7 +98,7 @@ namespace CurrencyConverter.ViewModels
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 
-	class Currency
+	public class Currency
 	{
         public string Name { get; set; }
         public double Price { get; set; }

@@ -5,10 +5,6 @@
              xmlns:local="clr-namespace:CurrencyConverter.ViewModels"
              Title="Currency Converter"
              Shell.NavBarIsVisible="False">
-    <ContentPage.BindingContext>
-        <local:CurrencyConverterViewModel />
-    </ContentPage.BindingContext>
-
     <Grid Margin="15">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
