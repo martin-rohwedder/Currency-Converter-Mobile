@@ -49,20 +49,20 @@
                        Grid.Row="1"
                        Grid.Column="0"
                        Grid.ColumnSpan="3" />
-
+                
                 <Picker ItemsSource="{Binding Currencies}"
-                        ItemDisplayBinding="{Binding Name}"
+                        ItemDisplayBinding="{Binding DisplayName}"
                         SelectedItem="{Binding SelectedFromCurrency}"
                         Grid.Row="2"
                         Grid.Column="0" />
-                
+
                 <Label Text="==>" 
                        Grid.Row="2" 
                        Grid.Column="1"
                        VerticalOptions="Center" />
-
+                
                 <Picker ItemsSource="{Binding Currencies}"
-                        ItemDisplayBinding="{Binding Name}"
+                        ItemDisplayBinding="{Binding DisplayName}"
                         SelectedItem="{Binding SelectedToCurrency}"
                         Grid.Row="2"
                         Grid.Column="2" />
@@ -71,9 +71,9 @@
             <Label FontSize="28"
                    HorizontalOptions="Center">
                 <Label.Text>
-                    <MultiBinding StringFormat="{}{0} {1}">
+                    <MultiBinding StringFormat="{}{0:0.##} {1}">
                         <Binding Path="ConvertedCurrency" />
-                        <Binding Path="SelectedToCurrency.Name" />
+                        <Binding Path="SelectedToCurrency.IsoA3Code" />
                     </MultiBinding>
                 </Label.Text>
             </Label>

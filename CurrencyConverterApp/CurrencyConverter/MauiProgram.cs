@@ -23,7 +23,7 @@ namespace CurrencyConverter
             builder.Services.AddTransient<ICurrencyConverterService, CurrencyConverterService>();
 
 #if DEBUG
-		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

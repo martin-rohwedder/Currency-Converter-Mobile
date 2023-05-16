@@ -9,4 +9,10 @@ public partial class CurrencyConverterPage : ContentPage
 		BindingContext = currencyConverterViewModel;
 		InitializeComponent();
 	}
+
+    protected async override void OnAppearing()
+    {
+        base.OnAppearing();
+		await (BindingContext as CurrencyConverterViewModel).LoadDataAsync();
+    }
 }

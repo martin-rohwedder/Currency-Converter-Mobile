@@ -1,11 +1,7 @@
-﻿using CurrencyConverter.Services;
-using System;
-using System.Collections.Generic;
+﻿using CurrencyConverter.Models;
+using CurrencyConverter.Services;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CurrencyConverter.ViewModels
 {
@@ -15,46 +11,27 @@ namespace CurrencyConverter.ViewModels
 
         private readonly ICurrencyConverterService _currencyConverterService;
 		private double _amount;
-        private IList<Currency> _currencies;
-        private Currency _selectedFromCurrency;
-        private Currency _selectedToCurrency;
+        private IList<CurrencyDetail> _currencies;
+        private CurrencyDetail _selectedFromCurrency;
+        private CurrencyDetail _selectedToCurrency;
 		private double _convertedCurrency;
+        private bool _dataIsLoaded = false;
 
 		public CurrencyConverterViewModel(ICurrencyConverterService currencyConverterService)
 		{
             _currencyConverterService = currencyConverterService;
+        }
 
-            Currencies = new List<Currency>
-            {
-                new Currency()
-                {
-                    Name = "EUR",
-                    Price = 1
-                },
-                new Currency()
-                {
-                    Name = "DKK",
-                    Price = 7.45
-                },
-                new Currency()
-                {
-                    Name = "SEK",
-                    Price = 5.5
-                },
-                new Currency()
-                {
-                    Name = "NOK",
-                    Price = 7.30
-                },
-                new Currency()
-                {
-                    Name = "USD",
-                    Price = 1.2
-                },
-            };
+        public async Task LoadDataAsync()
+        {
+            await _currencyConverterService.GetExchangeRates();
 
-			SelectedFromCurrency = Currencies.FirstOrDefault();
-			SelectedToCurrency = Currencies[1];
+            Currencies = _currencyConverterService.ExchangeRates.CurrencyDetails.OrderBy(c => c.Currency).ToList();
+
+            SelectedFromCurrency = Currencies.FirstOrDefault(c => c.IsoA3Code.Equals("EUR"));
+            SelectedToCurrency = Currencies.FirstOrDefault(c => c.IsoA3Code.Equals("DKK"));
+
+            _dataIsLoaded = true;
 
             Amount = 1;
         }
@@ -65,34 +42,40 @@ namespace CurrencyConverter.ViewModels
 			set
 			{
 				_amount = value;
-                ConvertedCurrency = _currencyConverterService.ConvertCurrency(SelectedFromCurrency.Price, SelectedToCurrency.Price, _amount);
+                ConvertedCurrency = ConvertCurrencyWhenDataIsLoaded();
                 OnPropertyChanged(nameof(Amount));
 			}
 		}
 
-		public IList<Currency> Currencies
+		public IList<CurrencyDetail> Currencies
 		{
 			get { return _currencies; }
-			set { _currencies = value; }
+			set
+            {
+                _currencies = value;
+                OnPropertyChanged(nameof(Currencies));
+            }
 		}
 
-		public Currency SelectedFromCurrency
+		public CurrencyDetail SelectedFromCurrency
 		{
 			get { return _selectedFromCurrency; }
 			set
 			{
 				_selectedFromCurrency = value;
-				OnPropertyChanged(nameof(SelectedFromCurrency));
+                ConvertedCurrency = ConvertCurrencyWhenDataIsLoaded();
+                OnPropertyChanged(nameof(SelectedFromCurrency));
 			}
 		}
 
-		public Currency SelectedToCurrency
+		public CurrencyDetail SelectedToCurrency
 		{
 			get { return _selectedToCurrency; }
 			set
 			{
 				_selectedToCurrency = value;
-				OnPropertyChanged(nameof(SelectedToCurrency));
+                ConvertedCurrency = ConvertCurrencyWhenDataIsLoaded();
+                OnPropertyChanged(nameof(SelectedToCurrency));
 			}
 		}
 
@@ -108,11 +91,10 @@ namespace CurrencyConverter.ViewModels
 
         public void OnPropertyChanged([CallerMemberName] string name = "") =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-    }
 
-	public class Currency
-	{
-        public string Name { get; set; }
-        public double Price { get; set; }
+        private double ConvertCurrencyWhenDataIsLoaded()
+        {
+            return (_dataIsLoaded) ? _currencyConverterService.ConvertCurrency(SelectedFromCurrency.Value, SelectedToCurrency.Value, _amount) : 1;
+        }
     }
 }
