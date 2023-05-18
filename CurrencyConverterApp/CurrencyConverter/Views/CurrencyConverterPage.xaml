@@ -21,7 +21,7 @@
                     AlignItems="Stretch"
                     JustifyContent="SpaceEvenly"
                     Grid.Row="1">
-            <Image Source="dotnet_bot.svg"
+            <Image Source="coins.svg"
                    HorizontalOptions="Center" />
 
             <Grid ColumnSpacing="25"
